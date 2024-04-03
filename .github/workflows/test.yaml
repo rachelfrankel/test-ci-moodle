@@ -1,0 +1,29 @@
+name: 🧪 Moodle Test222
+
+on: push
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: 📂 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Prepare Moodle Application
+      run: |
+        docker build -f Dockerfile.moodle -t moodle .
+        docker network create moodle
+        docker run -d --name moodle -p 80:8080 --net moodle moodle
+        docker run -d --name mariadb -p 3306:3306 --net moodle bitnami/mariadb:11.2    
+
+    - name: ✅ Run Tests
+      run: |
+        sleep 10;
+        docker cp test/feature/. moodle:/opt/bitnami/moodle/local/aiquestions/tests
+        docker cp test/config.php moodle:/opt/bitnami/moodle/config.php
+        docker exec moodle php opt/bitnami/moodle/admin/tool/phpunit/cli/init.php
+        docker exec moodle bash -c "cd opt/bitnami/moodle && \
+                vendor/bin/phpunit local/aiquestions/tests/convert_word_to_pdf_test.php"
