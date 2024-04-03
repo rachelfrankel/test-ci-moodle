@@ -1,0 +1,23 @@
+name: 🧪 Moodle Test
+
+on: push
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: 📂 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Prepare Moodle Application
+      run: |
+        chmod +x test/build_containers.sh
+        test/build_containers.sh        
+
+    - name: ✅ Run Tests
+      run: |
+        chmod +x test/test.sh
+        test/test.sh

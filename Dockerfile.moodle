@@ -1,0 +1,41 @@
+FROM bitnami/moodle:4.3
+
+# --- NETFREE CERT INTSALL ---
+ADD https://netfree.link/dl/unix-ca.sh /home/netfree-unix-ca.sh
+RUN cat  /home/netfree-unix-ca.sh | sh
+ENV NODE_EXTRA_CA_CERTS=/etc/ca-bundle.crt
+ENV REQUESTS_CA_BUNDLE=/etc/ca-bundle.crt
+ENV SSL_CERT_FILE=/etc/ca-bundle.crt
+# --- END NETFREE CERT INTSALL ---
+
+ENV MOODLE_LANG=he
+
+ENV BITNAMI_DEBUG=true
+ENV MOODLE_DATABASE_HOST=mariadb
+ENV MOODLE_DATABASE_PORT_NUMBER=3306
+ENV MOODLE_DATABASE_USER=bn_moodle
+ENV MOODLE_DATABASE_NAME=bitnami_moodle
+ENV MOODLE_DATABASE_PASSWORD=foobar1111
+ENV MOODLE_DATABASE_ROOT_PASSWORD=foobar1111
+ENV MOODLE_SITE_NAME=Moodle_skyvar
+ENV MOODLE_USERNAME=foobar_user
+ENV MOODLE_PASSWORD=foobar1111
+
+RUN apt-get update && \
+    apt-get install -y libzip-dev zlib1g-dev libpng-dev libxml2-dev && \
+    apt-get install unzip wget -y && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY install_moodle_plugins.sh /tmp
+RUN chmod +x /tmp/install_moodle_plugins.sh && \
+    /tmp/install_moodle_plugins.sh
+
+COPY src /src
+RUN cp -r /src/. opt/bitnami/moodle/
+
+# COPY test/feature /opt/bitnami/moodle/local/aiquestions/tests
+ 
+RUN cd opt/bitnami/moodle && \
+composer require phpoffice/phpword:^0.18 dompdf/dompdf:^1.0 && \
+composer update && \
+composer dump-autoload
