@@ -21,6 +21,11 @@ ENV MOODLE_LANG=he
 # ENV MOODLE_USERNAME=foobar_user
 # ENV MOODLE_PASSWORD=foobar1111
 
+
+# -e ALLOW_EMPTY_PASSWORD=yes \
+#   -e MOODLE_DATABASE_USER=bn_moodle \
+#   -e MOODLE_DATABASE_NAME=bitnami_moodle \
+
 RUN apt-get update && \
     apt-get install -y libzip-dev zlib1g-dev libpng-dev libxml2-dev && \
     apt-get install unzip wget -y && \
