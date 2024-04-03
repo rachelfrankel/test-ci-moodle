@@ -10,11 +10,11 @@
 
 docker build -f Dockerfile.moodle -t moodle .
 docker build -f Dockerfile.mariadb -t mariadb .
-# docker network create my-network300
-# docker run -d --name moodle -p 80:8080 --network my-network300 moodle
-# docker run -d --name mariadb -p 3306:3306 --network my-network300 mariadb
-docker run -d --name moodle -p 80:8080 moodle
-docker run -d --name mariadb -p 3306:3306 mariadb
+docker network create my-network300
+docker run -d --name moodle -p 80:8080 --network my-network300 moodle
+docker run -d --name mariadb -p 3306:3306 --network my-network300 mariadb
+# docker run -d --name moodle -p 80:8080 moodle
+# docker run -d --name mariadb -p 3306:3306 mariadb
 
 # docker build -t moodle .
 # docker build -f Dockerfile.moodle -t moodle .
