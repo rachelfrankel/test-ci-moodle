@@ -38,9 +38,7 @@ jobs:
         volumes:
           - 'moodledata_data:/bitnami/moodledata'
           - './src:/src'
-        depends_on:
-          - mariadb
-
+        
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
