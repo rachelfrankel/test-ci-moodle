@@ -42,8 +42,6 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
-      # with:
-      #   path: src
 
     - name: 🐍 Install PHP
       uses: shivammathur/setup-php@v2
@@ -54,11 +52,7 @@ jobs:
         coverage: none
     - name: docker container ls
       run: docker container ls
-    # - name: Install moodle-plugin-ci
-    #   run: |
-    #     moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
-    #   env:
-    #     DB: mariadb
-    #     MOODLE_BRANCH: 'MOODLE_401_STABLE'
-    - name: Install moodle-plugin-ci
+    - name: get id
+      run: docker ps -a --filter "ancestor=bitnami/moodle:4.3" --format "{{.ID}}"
+    - name: docker cp
       run: docker cp test/feature/. moodle:/opt/bitnami/moodle/local/aiquestions/tests
