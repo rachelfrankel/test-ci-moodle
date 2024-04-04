@@ -1,4 +1,4 @@
-name: Compose CI
+name: Parallel
 on: push
 
 jobs:
@@ -39,7 +39,6 @@ jobs:
         --env MOODLE_SITE_NAME="Moodle skyvar" \
         --env MOODLE_USERNAME=foobar_user \
         --env MOODLE_PASSWORD=foobar1111 \
-        --network bridge \
         -p 80:8080 -p 443:8443 \
         -v moodledata_data:/bitnami/moodledata \
         -v ./src:/src \
