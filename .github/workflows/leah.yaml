@@ -1,0 +1,63 @@
+name: Compose CI
+on: push
+
+jobs:
+  compose:
+    runs-on: ubuntu-22.04
+
+    services:
+
+      mariadb:
+        image: bitnami/mariadb:11.2
+        env:
+          MARIADB_USER: bn_moodle
+          MARIADB_PASSWORD: foobar1111
+          MARIADB_ROOT_PASSWORD: foobar1111
+          MARIADB_DATABASE: bitnami_moodle
+        ports:
+          - "3306:3306"
+        volumes:
+          - 'mariadb_data:/bitnami/mariadb'  
+
+      moodle:
+        build: .
+        env:
+          BITNAMI_DEBUG: true
+          MOODLE_DATABASE_HOST: mariadb
+          MOODLE_DATABASE_PORT_NUMBER: 3306
+          MOODLE_DATABASE_USER: bn_moodle
+          MOODLE_DATABASE_NAME: bitnami_moodle
+          MOODLE_DATABASE_PASSWORD: foobar1111
+          MOODLE_DATABASE_ROOT_PASSWORD: foobar1111
+          MOODLE_SITE_NAME: Moodle skyvar
+          MOODLE_USERNAME: foobar_user
+          MOODLE_PASSWORD: foobar1111
+        ports:
+          - 80:8080
+          - 443:8443    
+        volumes:
+          - 'moodledata_data:/bitnami/moodledata'
+          - './src:/src'
+        depends_on:
+          - mariadb
+
+    steps:
+    - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          path: src
+
+    - name: 🐍 Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_pgsql
+          tools: composer
+          coverage: none
+
+    - name: Install moodle-plugin-ci
+        run: |
+          moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+        env:
+          DB: ${{ matrix.database }}
+          MOODLE_BRANCH: ${{ matrix.moodle-branch }}
