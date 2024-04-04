@@ -52,9 +52,11 @@ jobs:
         extensions: pdo_pgsql
         tools: composer
         coverage: none
+    # - name: Install moodle-plugin-ci
+    #   run: |
+    #     moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+    #   env:
+    #     DB: mariadb
+    #     MOODLE_BRANCH: 'MOODLE_401_STABLE'
     - name: Install moodle-plugin-ci
-      run: |
-        moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
-      env:
-        DB: mariadb
-        MOODLE_BRANCH: 'MOODLE_401_STABLE'
+      run: docker cp test/feature/. opt/bitnami/moodle/local/aiquestions/tests
