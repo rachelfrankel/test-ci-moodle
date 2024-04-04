@@ -50,9 +50,17 @@ jobs:
         extensions: pdo_pgsql
         tools: composer
         coverage: none
-    - name: docker container ls
-      run: docker container ls
-    - name: get id
-      run: docker ps -a --filter "ancestor=bitnami/moodle:4.3" --format "{{.ID}}"
-    - name: docker cp
-      run: docker cp test/feature/. moodle:/opt/bitnami/moodle/local/aiquestions/tests
+    - name: Get ID
+      id: get_id
+      run: |
+        ID=$(docker ps -a --filter "ancestor=bitnami/moodle:4.3" --format "{{.ID}}")
+        echo "DOCKER_ID=$ID" >> $GITHUB_ENV
+          
+    - name: Docker cp
+      run: docker cp test/feature/. $DOCKER_ID:/opt/bitnami/moodle/local/aiquestions/tests
+    # - name: docker container ls
+    #   run: docker container ls
+    # - name: get id
+    #   run:  docker ps -a --filter "ancestor=bitnami/moodle:4.3" --format "{{.ID}}" 
+    # - name: docker cp
+    #   run: docker cp test/feature/. moodle:/opt/bitnami/moodle/local/aiquestions/tests
