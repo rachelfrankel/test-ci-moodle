@@ -20,7 +20,7 @@ jobs:
           - 'mariadb_data:/bitnami/mariadb'  
 
       moodle:
-        build: .
+        image: bitnami/moodle:4.3
         env:
           BITNAMI_DEBUG: true
           MOODLE_DATABASE_HOST: mariadb
