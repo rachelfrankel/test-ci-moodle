@@ -57,7 +57,8 @@ jobs:
         echo "DOCKER_ID=$ID" >> $GITHUB_ENV
           
     - name: Docker cp
-      run: docker cp test/feature/. $DOCKER_ID:/opt/bitnami/moodle/local/aiquestions/tests
+      # run: docker cp test/feature/. $DOCKER_ID:/opt/bitnami/moodle/local/aiquestions/tests
+      run: docker cp test/config.php $DOCKER_ID:/opt/bitnami/moodle/config.php
     # - name: docker container ls
     #   run: docker container ls
     # - name: get id
