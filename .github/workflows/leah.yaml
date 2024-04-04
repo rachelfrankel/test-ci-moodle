@@ -59,6 +59,9 @@ jobs:
     - name: Docker cp
       # run: docker cp test/feature/. $DOCKER_ID:/opt/bitnami/moodle/local/aiquestions/tests
       run: docker cp test/config.php $DOCKER_ID:/opt/bitnami/moodle/config.php
+    - name: exec 
+      run: docker exec $DOCKER_ID php opt/bitnami/moodle/admin/tool/phpunit/cli/init.php
+
     # - name: docker container ls
     #   run: docker container ls
     # - name: get id
