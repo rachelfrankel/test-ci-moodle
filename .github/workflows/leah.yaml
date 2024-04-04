@@ -42,8 +42,8 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4
-      with:
-        path: src
+      # with:
+      #   path: src
 
     - name: 🐍 Install PHP
       uses: shivammathur/setup-php@v2
@@ -56,5 +56,5 @@ jobs:
       run: |
         moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
       env:
-        DB: ${{ matrix.database }}
-        MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+        DB: mariadb
+        MOODLE_BRANCH: 'MOODLE_401_STABLE'
