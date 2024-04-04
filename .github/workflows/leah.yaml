@@ -52,6 +52,8 @@ jobs:
         extensions: pdo_pgsql
         tools: composer
         coverage: none
+    - name: docker container ls
+      run: docker container ls
     # - name: Install moodle-plugin-ci
     #   run: |
     #     moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
@@ -59,4 +61,4 @@ jobs:
     #     DB: mariadb
     #     MOODLE_BRANCH: 'MOODLE_401_STABLE'
     - name: Install moodle-plugin-ci
-      run: docker cp test/feature/. opt/bitnami/moodle/local/aiquestions/tests
+      run: docker cp test/feature/. moodle:/opt/bitnami/moodle/local/aiquestions/tests
